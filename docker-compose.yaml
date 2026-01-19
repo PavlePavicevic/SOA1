@@ -1,0 +1,32 @@
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  dataset-service:
+    build: ./dataset-service
+    container_name: dataset-service
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/weatherdb
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo
+
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    environment:
+      - DATASET_SERVICE_URL=http://dataset-service:5001
+      - WEATHERSTACK_KEY=${WEATHERSTACK_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dataset-service
+
+volumes:
+  mongo_data:
