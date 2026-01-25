@@ -52,7 +52,7 @@ public class WeatherSummaryController {
 
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("city", city);
-    result.put("current", weatherstack);     // sirov odgovor (možeš kasnije “očistiti”)
+    result.put("current", weatherstack);     
     result.put("history", historyStats);
     result.put("data_sources", List.of("weatherstack", "mongo-dataset-service"));
     return result;
